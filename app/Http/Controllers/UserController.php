@@ -18,12 +18,12 @@ class UserController extends Controller
             ->orderBy('id')
             ->paginate(5);
 
-        return view('pages.userIndex', compact('users'));
+        return view('pages.users.userIndex', compact('users'));
     }
 
     public function create()
     {
-        return view('pages.createUser');
+        return view('pages.users.createUser');
     }
 
     public function store(Request $request)
@@ -48,7 +48,7 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
 
-        return view('pages.userData', compact('user'));
+        return view('pages.users.userData', compact('user'));
     }
 
     public function update(Request $request, $id)

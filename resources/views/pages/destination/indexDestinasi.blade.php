@@ -51,8 +51,8 @@
                                 <td>{{ $destination->working_hours }}</td>
                                 <td>{{ $destination->working_days }}</td>
                                 <td>
-                                    <a href="/destinations/{{ $destination->id }}/edit" class="btn btn-warning btn-sm me-1">Edit</a>
-                                    <form action="/destination/{{ $destination->id }}" method="post" class="d-inline">
+                                    <a href="{{ route('destinations.edit', $destination->id) }}" class="btn btn-warning btn-sm me-1">Edit</a>
+                                    <form action="{{ route('destinations.destroy', $destination->id) }}" method="post" class="d-inline">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure to delete {{ $destination->name }}?')">Delete</button>

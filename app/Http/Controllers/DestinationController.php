@@ -15,7 +15,7 @@ class DestinationController extends Controller
         } else {
             $destinations = Destination::orderBy('id')->paginate(5);
         }
-        return view( view: 'pages.indexDestinasi', data: compact('destinations'));
+        return view( view: 'pages.destination.indexDestinasi', data: compact('destinations'));
     }
 
     public function show($id)
