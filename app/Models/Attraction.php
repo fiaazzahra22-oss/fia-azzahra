@@ -7,9 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 class Attraction extends Model
 {
     protected $fillable = [
+        'destination_id',
         'name',
         'description',
-        'location',
-        'category_id',
     ];
+
+
+    public function destination()
+    {
+        return $this->belongsTo( related: Destination::class);
+    }
 }

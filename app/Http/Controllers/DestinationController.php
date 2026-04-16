@@ -9,57 +9,75 @@ class DestinationController extends Controller
 {
     public function index(Request $request)
     {
-        $keyword = $request->input(key: 'search');
+        $keyword = $request->input('search');
+        
         if ($keyword != '') {
             $destinations = Destination::where('name', 'LIKE', '%' . $keyword . '%')->paginate(5);
         } else {
             $destinations = Destination::orderBy('id')->paginate(5);
         }
-        return view( view: 'pages.destination.indexDestinasi', data: compact('destinations'));
+
+        return view('pages.destination.indexDestinasi', compact('destinations'));
     }
 
     public function show($id)
     {
-        $destination = Destination::find($id);
-        return view( view: 'pages.data', data: compact('destination'));
+        $destination = Destination::findOrFail($id);
+        // Pastikan file ini ada di resources/views/pages/destination/data.blade.php
+        return view('pages.destination.data', compact('destination'));
     }
+
     public function create()
     {
-        return view( view: 'pages.createDestination');
+        // Menampilkan form tambah (tanpa perlu mencari $id)
+        return view('pages.destination.createDestination');
     }
 
-    public function store(Request $request)
+    public function store(Request $request) 
     {
-       
-    Destination::create($request->all());
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable',
+        ]);
 
-        return redirect( to: '/destinations')->with(key: 'success', value: 'Destination created successfully.');
+        Destination::create($validated);
+
+        return redirect()->route('destination.index')
+            ->with('success', 'Destination created successfully.');
+    }
+
+    public function edit($id)
+    {
+        $destination = Destination::findOrFail($id);
+        // Pastikan file ini ada di resources/views/pages/destination/editDestination.blade.php
+        return view('pages.destination.editDestination', compact('destination'));
+    }
+    
+    public function update(Request $request, $id) 
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable',
+        ]);
+
+        $destination = Destination::findOrFail($id);
+        $destination->update($validated);
+
+        return redirect()->route('destination.index')
+            ->with('success', 'Destination updated successfully.');
     }
 
     public function delete($id)
     {
         $destination = Destination::find($id);
+
         if ($destination) {
             $destination->delete();
-            return redirect( to: '/destinations')->with( key: 'success', value: 'Destination deleted successfully.');
-        } else {
-            return redirect( to: '/destinations')->with( key: 'error', value: 'Destination not found.');
+            return redirect()->route('destination.index')
+                ->with('success', 'Destination deleted successfully.');
         }
-    }
 
-    public function edit($id)
-    {
-        $destination = Destination::find($id);
-        return view('pages.editDestination', compact('destination'));
-    }
-    public function update(Request $request, $id)
-    {
-        $destination = Destination::find($id);
-        if ($destination) {
-            $destination->update($request->all());
-            return redirect( to: '/destinations')->with('success', value: 'Destination updated successfully.');
-        } else {
-            return redirect( to: '/destinations')->with('error', value: 'Destination not found.');
-        }
+        return redirect()->route('destination.index')
+            ->with('error', 'Destination not found.');
     }
 }

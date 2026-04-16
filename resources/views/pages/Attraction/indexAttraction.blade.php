@@ -31,12 +31,12 @@
                         <tr>
                             <th class="ps-4">No</th>
                             <th>User Info</th>
-                            <th>Email</th>
+                            <th>Description</th>
                             <th class="text-end pe-4">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse ($attractions as $index => $attraction)
+                        @forelse ($attractions as  $attraction)
                         <tr>
                             <td class="ps-4 text-muted">
                                 {{ $loop->iteration }}

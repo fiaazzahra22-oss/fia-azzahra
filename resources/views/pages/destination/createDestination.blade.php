@@ -2,7 +2,17 @@
 
 @section('content')
 
-<form action="/destinations" method="post" class="form-floating">
+@if ($errors->any())
+    <div class="alert alert-danger">
+    <ul class="mb-0">
+        @foreach (@errors->all() as $errors)
+        <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+    </div>
+@endif
+
+<form action="{{ route('destination.create') }}" method="post" class="form-floating">
     @csrf
     <div class="form-floating mb-3">
         <input type="text" class="form-control" id="name" placeholder="Asia Heritage" name="name">
